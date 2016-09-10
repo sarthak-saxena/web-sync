@@ -1,0 +1,12 @@
+.analysis-tool table {
+  table-layout: fixed;
+}
+.data-container {
+  max-height: 400px;
+  overflow: scroll;
+  font-size: 13px;
+  color: #6f6f6f;
+}
+.analysis-tool table tr td {
+  word-wrap: break-word;
+}
