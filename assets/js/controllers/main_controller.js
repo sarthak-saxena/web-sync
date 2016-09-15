@@ -1,7 +1,7 @@
 imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http',
   function($scope, $rootScope, ImageService, $http) {
 
-    $scope.visionUrl = '/images/koovs-screenshot.png';
+    $scope.visionUrl = '/images/77f23ec3-d3d5-42b4-8947-1b2bfba9744e.jpg';
 
     var getImageData = function(url) {
       ImageService.getImageData(url).then(function(response) {
