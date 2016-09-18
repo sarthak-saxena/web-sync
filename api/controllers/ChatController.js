@@ -11,11 +11,16 @@ module.exports = {
       var data = req.params.all();
       Chat.create(data).exec(function(error,data){
         console.log(data);
-        Chat.publishCreate({
-          id: data.id,
-          message: data.message,
-          user: data.user
-        });
+        if(data !== undefined){
+          Chat.publishCreate({
+            id: data.id,
+            message: data.message,
+            user: data.user
+          });
+        }
+        else {
+          console.log("empty data");
+        }
       });
     }
     else if (req.isSocket) {
