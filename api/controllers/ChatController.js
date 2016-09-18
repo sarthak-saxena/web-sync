@@ -4,40 +4,24 @@
  * @description :: Server-side logic for managing chats
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var _ = require('lodash');
+var ids = [];
+
 
 module.exports = {
-	addConversation: function(req, res){
+  storeEvent: function(req, res) {
     if (req.isSocket && req.method === 'POST') {
-      var data = req.params.all();
-      Chat.create(data).exec(function(error,data){
-        console.log(data);
-        if(data !== undefined){
-          Chat.publishCreate({
-            id: data.id,
-            message: data.message,
-            user: data.user
-          });
-        }
-        else {
-          console.log("empty data");
-        }
-      });
+    var event = req.params.all();
+    _.remove(ids, function(id){
+      return id === req.socket.id;
+    });
+    console.log(req.socket.id);
+    sails.sockets.broadcast([], 'eventPerformed', event);
     }
     else if (req.isSocket) {
-      Chat.watch(req.socket);
-      console.log("User Subscribed to: " + req.socket.id);
+      ids.push(req.socket.id);
+      console.log("Event Subscribed to: " + req.socket.id);
     }
-  },
-
-  deleteConversations: function(req, res) {
-    Chat.destroy({}).exec(function(err){
-      if (err){
-        res.json(err);
-      }
-      else {
-        res.json({success: true});
-      }
-    });
   }
 };
 

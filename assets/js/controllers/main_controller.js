@@ -1,41 +1,33 @@
 imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http','$log',
   function($scope, $rootScope, ImageService, $http, $log) {
-    $scope.getChatData = function(){
-      $http.get('/chat').success(function(response){
-        $scope.chatList = response;
-        $log.info(response);
+
+    // io.socket.get('/chat/storeEvent');
+
+    $(document).on('click',function(event){
+      io.socket.request({
+        url: '/chat/storeEvent',
+        data: {class: event.target.className,
+          type: event.type,
+          value: event.target.value
+        },
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/x-yaml'
+        }
       });
-    };
+    });
 
-    $scope.getChat = function(){
-      io.socket.get('/chat/addConversation');
-      $scope.getChatData();
-    };
+    io.socket.on('eventPerformed',function(event){
+      console.log(event);
 
-    $scope.getChat();
-
-    $scope.chatUser = "ChatBot";
-    $scope.chatMessage = "";
-
-    io.socket.on('chat', function(obj){
-      if(obj.verb === 'created') {
-        $log.info(obj);
-        $scope.chatList.push(obj.data);
-        $scope.$digest();
-      }
+      event.class = event.class.split(' ').join('.');
+      console.log(event.class);
+      $('.'+event.class).trigger(event.type);
+      // $(event.target).trigger(event);
     });
 
     $scope.sendMsg = function(){
-      $log.info($scope.chatMessage);
-      io.socket.post('/chat/addConversation/',{user:$scope.chatUser,message: $scope.chatMessage});
-      $scope.chatMessage = "";
-    };
-
-    $scope.destroyChat = function() {
-      $http.delete('/chat/deleteConversations').success(function(response){
-        console.log("SUCCESS",response);
-        $scope.getChatData();
-      });
+      console.log('element clicked');
     };
 
   }
