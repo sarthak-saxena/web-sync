@@ -1,3 +1,6 @@
-# first
+# Chat application with sails
 
-a [Sails](http://sailsjs.org) application
+### A realtime chat application built with node.js using sockets in sails
+
+- Run npm install
+- Sails lift
