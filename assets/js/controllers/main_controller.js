@@ -14,7 +14,7 @@ imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http'
 
     $scope.getChat();
 
-    $scope.chatUser = "nikkyBot";
+    $scope.chatUser = "ChatBot";
     $scope.chatMessage = "";
 
     io.socket.on('chat', function(obj){
