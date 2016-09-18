@@ -1,5 +1,29 @@
 .messenger {
   position: absolute;
-  width: 79%;
   bottom: 21px;
+  margin-left: -28px;
+  width: 79%;
+}
+
+@media screen and (max-width: 600px ) {
+  .messenger {
+    width: 100%;
+  }
+}
+
+.messenger .message {
+  margin-left: -12px;
+  min-width: 126px;
+  font-size: 12px;
+}
+
+.messenger .user {
+  min-width: 78px;
+  font-size: 12px;
+}
+
+.messenger .btn-send {
+  min-width: 55px;
+  font-size: 12px;
+  margin-left: -8px;
 }

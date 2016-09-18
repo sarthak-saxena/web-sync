@@ -1,7 +1,8 @@
 <div class="container tool" ng-controller="mainCtrl">
-    <div class="container">
+    <div class="junbotron">
         <h3>Chat Box</h3>
-        <div class="col-md-12" style="padding:100px">
+        <a ng-click='destroyChat()'>Destroy all Chats</a>
+        <div class="col-lg-12">
             <table  class="table">
                 <tr class="chat_message" ng-repeat="chat in chatList | limitTo: 15">
                     <td class="col-md-12 td_class"><strong>{{chat.user}} : {{chat.message}}</strong> </td>
@@ -9,20 +10,19 @@
             </table>
         </div>
     </div>
-    <a ng-click='destroyChat()'>Destroy all</a>
     <div class="row messenger">
         <div class="col-lg-12">
-            <form class="form_chat">
-                <div class="col-lg-4 col-md-3">
-                    <!-- Username -->
-                    <input type="text" ng-model="chatUser" class="form-control" placeholder="TypeYourNameHere">
-                </div>
-                <div class="col-lg-6 col-md-5">
-                    <!-- Chat Message -->
-                    <input type="text" ng-model="chatMessage" class="form-control" placeholder="TypeYourMessageHere">
-                </div>
-                <button class="btn btn-default col-lg-2 col-md-2" ng-click="sendMsg()">Send</button>
-            </form>
+                <form class="form_chat">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <!-- Username -->
+                        <input type="text" ng-model="chatUser" class="form-control user" placeholder="TypeYourNameHere">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <!-- Chat Message -->
+                        <input type="text" ng-model="chatMessage" class="form-control message" placeholder="TypeYourMessage">
+                    </div>
+                    <button class="btn btn-default col-lg-2 col-md-2 col-sm-2 col-xs-2 btn-send" ng-click="sendMsg()">Send</button>
+                </form>
         </div>
     </div>
 </div>
