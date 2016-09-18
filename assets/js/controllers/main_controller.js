@@ -1,7 +1,7 @@
 imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http','$log',
   function($scope, $rootScope, ImageService, $http, $log) {
 
-    // io.socket.get('/chat/storeEvent');
+    io.socket.get('/chat/storeEvent');
 
     $(document).on('click',function(event){
       io.socket.request({

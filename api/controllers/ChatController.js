@@ -15,8 +15,7 @@ module.exports = {
     _.remove(ids, function(id){
       return id === req.socket.id;
     });
-    console.log(req.socket.id);
-    sails.sockets.broadcast([], 'eventPerformed', event);
+    sails.sockets.broadcast(ids, 'eventPerformed', event);
     }
     else if (req.isSocket) {
       ids.push(req.socket.id);
