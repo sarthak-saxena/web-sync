@@ -1,12 +1,11 @@
-imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http', '$log',
-  function($scope, $rootScope, ImageService, $http, $log) {
-
-    io.socket.get('/chat/storeEvent');
+imageApp.controller('mainCtrl',
+  function() {
+    io.socket.get('192.168.0.102/chat/storeEvent');
 
     $(document).on('click', function(event) {
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '/chat/storeEvent',
+          url: '192.168.0.102/chat/storeEvent',
           data: {
             class: event.target.className,
             type: event.type
@@ -24,7 +23,7 @@ imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http'
       console.log(event.which);
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '/chat/storeEvent',
+          url: '192.168.0.102/chat/storeEvent',
           data: {
             class: event.target.className,
             type: event.type,
@@ -41,7 +40,7 @@ imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http'
     $(window).on('scroll', function(event) {
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '/chat/storeEvent',
+          url: '192.168.0.102/chat/storeEvent',
           data: {
             scrollValue: $(window).scrollTop(),
             type: event.type,
@@ -55,16 +54,20 @@ imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http'
     });
 
     io.socket.on('eventPerformed', function(event) {
+      var className;
       switch (event.type) {
         case 'click':
           event.class = event.class.split(' ').join('.');
+          className = formatClass(event.class);
+          $('input.' + className).focus();
           $('.' + event.class).trigger(event.type);
           break;
         case 'scroll':
           $(window).scrollTop(event.scrollValue);
           break;
         case 'keyup':
-          var className = formatClass(event.class);
+          className = formatClass(event.class);
+          $('input.' + className).focus();
           $('input.' + className).val(event.value);
           break;
       }
@@ -78,13 +81,5 @@ imageApp.controller('mainCtrl', ['$scope', '$rootScope', 'ImageService', '$http'
       var className = events.join('.');
       return className;
     };
-
-    $scope.destroyChat = function() {
-      alert('test');
-    };
-
-    $scope.sendMsg = function() {
-      alert('clicked');
-    };
   }
-]);
+);
