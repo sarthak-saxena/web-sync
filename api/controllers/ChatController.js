@@ -5,22 +5,31 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 var _ = require('lodash');
-var ids = [];
-
 
 module.exports = {
   storeEvent: function(req, res) {
     if (req.isSocket && req.method === 'POST') {
-    var event = req.params.all();
-    _.remove(ids, function(id){
-      return id === req.socket.id;
-    });
-    sails.sockets.broadcast(ids, 'eventPerformed', event);
-    }
-    else if (req.isSocket) {
-      ids.push(req.socket.id);
-      console.log("Event Subscribed to: " + req.socket.id);
+      var event = req.params.all();
+
+      sails.sockets.subscribers('event_room', function(err, socketIds) {
+        console.log('socket', socketIds);
+
+        // perform only if two sockets are connected
+        if (socketIds.length > 1) {
+          var ids = socketIds;
+          _.remove(ids, function(id) {
+            return id === req.socket.id;
+          });
+          console.log('eventPerformed', JSON.stringify(event));
+          sails.sockets.broadcast(ids, 'eventPerformed', event);
+        }
+      });
+    } else if (req.isSocket) {
+      sails.sockets.join(req.socket, 'event_room', function() {
+        console.log('socket joined event_room');
+      });
+      console.log("Event Subscribed to: " + JSON.stringify(req.socket.rooms) + req.socket.id);
+      sails.sockets.broadcast(req.socket.id, 'subscribed', req.socket.id);
     }
   }
 };
-

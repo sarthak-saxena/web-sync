@@ -1,7 +1,7 @@
-<div class="container tool" ng-controller="mainCtrl">
+<div class="container tool" ng-controller="mainCtrl" style="height: 1500px;">
     <div class="junbotron">
         <h3>Chat Box</h3>
-        <a ng-click='destroyChat()'>Destroy all Chats</a>
+        <a ng-click='destroyChat()' class="test">Destroy all Chats</a>
         <div class="col-lg-12">
             <table  class="table">
                 <tr class="chat_message" ng-repeat="chat in chatList | limitTo: 15">
