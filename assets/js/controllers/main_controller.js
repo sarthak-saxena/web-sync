@@ -1,11 +1,11 @@
 imageApp.controller('mainCtrl',
   function() {
-    io.socket.get('192.168.0.102/chat/storeEvent');
+    io.socket.get('http://192.168.0.102/chat/storeEvent');
 
     $(document).on('click', function(event) {
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '192.168.0.102/chat/storeEvent',
+          url: 'http://192.168.0.102/chat/storeEvent',
           data: {
             class: event.target.className,
             type: event.type
@@ -23,7 +23,7 @@ imageApp.controller('mainCtrl',
       console.log(event.which);
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '192.168.0.102/chat/storeEvent',
+          url: 'http://192.168.0.102/chat/storeEvent',
           data: {
             class: event.target.className,
             type: event.type,
@@ -40,7 +40,7 @@ imageApp.controller('mainCtrl',
     $(window).on('scroll', function(event) {
       if (!_.isUndefined(event.originalEvent)) {
         io.socket.request({
-          url: '192.168.0.102/chat/storeEvent',
+          url: 'http://192.168.0.102/chat/storeEvent',
           data: {
             scrollValue: $(window).scrollTop(),
             type: event.type,
