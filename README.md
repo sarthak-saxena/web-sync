@@ -1,6 +1,6 @@
-# Chat application with sails
+# Web Sync
 
-### A realtime chat application built with node.js using sockets in sails
+### Keep multiple browsers & devices in sync when building websites.
 
 - Run npm install
 - Sails lift
