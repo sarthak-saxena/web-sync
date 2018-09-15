@@ -49,10 +49,16 @@ module.exports = {
           _.remove(ids, function(id) {
             return id === req.socket.id;
           });
-          event.mySocketId = req.socket.id;
-          event.socketIds = socketIds;
+
+
           Chat.find({}).then(result => {
             console.log(result);
+            event.mySocketId = result.find(r => r.isParent).userId;
+            event.socketIds = result.map(r => {if(!r.isParent){
+              return r.userId
+            }});
+            console.log('socketIds',socketIds)
+            event.annotationSocketId = req.socket.id
             if (result.find(r => r.userId === req.socket.id).isParent) {
               event.isParent = false
               sails.sockets.broadcast(ids, "eventPerformed", event);
