@@ -49,14 +49,17 @@ module.exports = {
           _.remove(ids, function(id) {
             return id === req.socket.id;
           });
-
+          event.mySocketId = req.socket.id;
+          event.socketIds = socketIds;
           Chat.find({}).then(result => {
             console.log(result);
             if (result.find(r => r.userId === req.socket.id).isParent) {
+              event.isParent = false
               sails.sockets.broadcast(ids, "eventPerformed", event);
             } else {
               let parent = result.find(r => r.isParent);
               let socketId = parent.userId;
+              event.isParent = true
               sails.sockets.broadcast([socketId], "eventPerformed", event);
             }
           });
@@ -137,8 +140,23 @@ module.exports = {
           _.remove(ids, function(id) {
             return id === req.socket.id;
           });
-          Chat.find({userId: req.socket.id}).then(result => {
+          Chat.find({ userId: req.socket.id }).then(result => {
             console.log(result);
+            console.log("taskExpertRequest", event.taskExpertRequest);
+
+            if (event.taskExpertRequest) {
+              Chat.update({ isParent: true })
+                .set({ isParent: false })
+                .then(() => {
+                  Chat.update({ userId: req.socket.id })
+                    .set({
+                      isParent: true
+                    })
+                    .then(() => {
+                      Chat.find({}).then(result => console.log(result));
+                    });
+                });
+            }
             if (result[0].isParent) {
               sails.sockets.broadcast(ids, "mouseEvent", event);
             }
@@ -198,7 +216,7 @@ module.exports = {
             return id === req.socket.id;
           });
           console.log("movementEvent");
-          Chat.find({userId: req.socket.id}).then(result => {
+          Chat.find({ userId: req.socket.id }).then(result => {
             console.log(ids);
             if (result[0].isParent) {
               sails.sockets.broadcast(ids, "movementEvent", event);
@@ -212,8 +230,8 @@ module.exports = {
       });
       console.log(
         "Event Subscribed to: " +
-        JSON.stringify(req.socket.rooms) +
-        req.socket.id
+          JSON.stringify(req.socket.rooms) +
+          req.socket.id
       );
       sails.sockets.broadcast(req.socket.id, "subscribed", req.socket.id);
     }
