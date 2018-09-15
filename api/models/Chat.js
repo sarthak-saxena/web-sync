@@ -7,14 +7,13 @@
 
 module.exports = {
   attributes: {
-    user: {
-      type: 'string',
+    userId: {
+      type: "string",
       required: true
     },
-    message: {
-      type: 'string',
+    isParent: {
+      type: "boolean",
       required: true
     }
   }
 };
-
